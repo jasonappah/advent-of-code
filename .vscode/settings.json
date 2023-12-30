@@ -1,0 +1,10 @@
+{
+  "github.copilot.enable": {
+    "*": false
+  },
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.unstable": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true
+}
