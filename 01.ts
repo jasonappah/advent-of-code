@@ -5,7 +5,7 @@ const part1 = (() => {
   const numbers: number[] = [0];
 
   for (const line of lines) {
-    let digits = Array.from(line)
+    const digits = Array.from(line)
       .map((char) => Number.parseInt(char))
       .filter((char) => !Number.isNaN(char));
     if (digits.length > 2) {
@@ -25,58 +25,57 @@ const part1 = (() => {
 
 const part2 = (() => {
   const numbers: number[] = [0];
-  const SPELLED_OUT_NUMBERS = [
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-  ];
-  const STRING_NUMERALS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-  const OPTIONS = [...SPELLED_OUT_NUMBERS, ...STRING_NUMERALS];
+  const SPELLED_OUT_NUMBERS_TO_NUMERALS = {
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+    seven: 7,
+    eight: 8,
+    nine: 9,
+  } as const;
 
-  for (const line of lines) {
-    let temp = "";
+  const SPELLED_OUT_NUMBERS = Object.keys(SPELLED_OUT_NUMBERS_TO_NUMERALS);
+  for (const lineIndex in lines) {
+    const line = lines[lineIndex]
+    const digits: number[] = [0, 0];
 
-    const possible = (append = "") =>
-      OPTIONS.some((o) => o.startsWith(temp + append));
+    const result = line.match(
+      /\d|(one)|(two)|(three)|(four)|(five)|(six)|(seven)|(eight)|(nine)/g
+    );
 
-    const digits: number[] = [];
-
-    for (const char of line + " ") {
-      let index = STRING_NUMERALS.findIndex((value) => value == temp);
-      if (index == -1)
-        index = SPELLED_OUT_NUMBERS.findIndex((value) => value == temp);
-      
-      if (index > -1) {
-        digits.push(parseInt(STRING_NUMERALS[index]));
-        temp = char;
-        if (!possible) temp = ""
-      } else if (possible(char)) {
-        temp += char;
+    for (const match of (result || [])) {
+      let n: number | null = null;
+      if (SPELLED_OUT_NUMBERS.includes(match)) {
+        n =
+        SPELLED_OUT_NUMBERS_TO_NUMERALS[
+          match as keyof typeof SPELLED_OUT_NUMBERS_TO_NUMERALS
+        ];
       } else {
-        temp = char
-        if (!possible) temp = ""
+        n = Number.parseInt(match);
       }
       
+      digits.push(n);
     }
 
-    console.log(JSON.stringify({ line, digits, temp }));
+    
+    // IDK why but the RegExpMatchArray always has 2 extra zero's at the beginning, so here we're getting rid of those and asserting we deleted what we expected
+    const [deleted1, deleted2] = digits.splice(0, 2)
+    if (deleted2 !== 0 || deleted1 !== 0) {
+      throw new Error(`Expected deleted entries to both be zeros, ${{deleted1, deleted2}}`)
+    }
 
+    
     if (digits.length > 2) {
       digits.splice(1, digits.length - 2);
     } else if (digits.length == 1) {
       digits.push(digits[0]);
     }
-
+    
     if (digits.length != 2) {
-      throw new Error(
-        `Should have 2 elements in digits, ${line} | ${digits} | ${temp}`
-      );
+      throw new Error(`Should have 2 elements in digits!`);
     }
 
     const [digit1, digit2] = digits;
