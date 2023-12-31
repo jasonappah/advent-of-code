@@ -24,7 +24,7 @@ const part1 = (() => {
 })();
 
 const part2 = (() => {
-  const numbers: number[] = [0];
+  const numbers: number[] = [];
   const SPELLED_OUT_NUMBERS_TO_NUMERALS = {
     one: 1,
     two: 2,
@@ -40,7 +40,7 @@ const part2 = (() => {
   const SPELLED_OUT_NUMBERS = Object.keys(SPELLED_OUT_NUMBERS_TO_NUMERALS);
   for (const lineIndex in lines) {
     const line = lines[lineIndex]
-    const digits: number[] = [0, 0];
+    const digits: number[] = [];
 
     const result = line.match(
       /\d|(one)|(two)|(three)|(four)|(five)|(six)|(seven)|(eight)|(nine)/g
@@ -58,13 +58,6 @@ const part2 = (() => {
       }
       
       digits.push(n);
-    }
-
-    
-    // IDK why but the RegExpMatchArray always has 2 extra zero's at the beginning, so here we're getting rid of those and asserting we deleted what we expected
-    const [deleted1, deleted2] = digits.splice(0, 2)
-    if (deleted2 !== 0 || deleted1 !== 0) {
-      throw new Error(`Expected deleted entries to both be zeros, ${{deleted1, deleted2}}`)
     }
 
     
