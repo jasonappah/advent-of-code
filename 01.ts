@@ -40,16 +40,18 @@ const part2 = (lines: string[]) => {
 
   const SPELLED_OUT_NUMBERS = Object.keys(SPELLED_OUT_NUMBERS_TO_NUMERALS);
   const digitMatchingRegex =
-    /\d|(one)|(two)|(three)|(four)|(five)|(six)|(seven)|(eight)|(nine)/g;
+    /(?=(\d|(one)|(two)|(three)|(four)|(five)|(six)|(seven)|(eight)|(nine)))/g;
 
   for (const lineIndex in lines) {
     const line = lines[lineIndex];
     const digits: number[] = [];
 
-    const result = line.match(digitMatchingRegex);
-    console.log({line, result})
-    for (const match of result || []) {
-      let n: number | null = null;
+    const result = line.matchAll(digitMatchingRegex);
+    console.log({line})
+    for (const m of result || []) {
+      const match = m.find((v) => v)
+      if (!match) throw new Error("Found no match")
+      let n: number | undefined;
       if (SPELLED_OUT_NUMBERS.includes(match)) {
         n =
           SPELLED_OUT_NUMBERS_TO_NUMERALS[
