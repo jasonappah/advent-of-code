@@ -1,5 +1,5 @@
-# aoc-23
+# advent-of-code
 
-my solutions to advent of code 2023, just a couple days late 🤭
+my solutions for [advent of code](https://adventofcode.com)!
 
-written in typescript, run with [Deno](https://deno.com/)
+written in typescript, run with [Deno](https://deno.com/)!
