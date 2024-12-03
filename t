@@ -1,2 +1,2 @@
 #!/bin/bash
-deno test --allow-read $1
+deno test --allow-read --fail-fast $1
