@@ -12,7 +12,7 @@ export type Instruction = {
 
 export const getInstructionsFromMemory = (line: string) => {
     const instructions: Instruction[] = []
-    const matches = line.matchAll(/((?:mul)|(?:do)|(?:don't))\((?:(\d+)\,(\d+))?\)/g)
+    const matches = line.matchAll(/(mul|do|don't)\((?:(\d+)\,(\d+))?\)/g)
     for (const match of matches) {
         const [fullInstruction, ...segments] = match
         const [command, ...args] = segments
